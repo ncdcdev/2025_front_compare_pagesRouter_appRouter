@@ -20,9 +20,8 @@ const mockRevenue: Revenue[] = [
 ];
 
 export default async function RevenueChartMock() {
-  // 意図的に遅延を追加（ストリーミング可視化用 - 中程度）
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  
+  // 遅延はRevenueChartWithTrackerで統一管理
+
   const chartHeight = 350;
   const { yAxisLabels, topLabel } = generateYAxis(mockRevenue);
 
@@ -64,4 +63,3 @@ export default async function RevenueChartMock() {
     </div>
   );
 }
-

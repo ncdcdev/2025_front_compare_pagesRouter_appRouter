@@ -53,14 +53,14 @@ const mockLatestInvoices: LatestInvoice[] = [
 ];
 
 async function DelayedCardData() {
-  // 意図的に遅延を追加（ストリーミング可視化用 - 短め）
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  // 意図的に遅延を追加（ストリーミング可視化用 - 最終的な表示時間を統一）
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   return mockCardData;
 }
 
 async function DelayedLatestInvoices() {
-  // 意図的に遅延を追加（ストリーミング可視化用 - 長め）
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // 意図的に遅延を追加（ストリーミング可視化用 - ゆっくり観察できるように延長）
+  await new Promise((resolve) => setTimeout(resolve, 6000));
   return mockLatestInvoices;
 }
 
@@ -106,13 +106,14 @@ async function InvoicesSection() {
 
 async function RevenueChartWithTracker() {
   const startTime = Date.now();
-  // RevenueChartMockは非同期コンポーネントなので、awaitで待機
-  const chartElement = await RevenueChartMock();
+  // RevenueChartMockは非同期コンポーネントなので、JSXとして使用
+  // コンポーネント内の遅延（3000ms）を待機するため、同じ遅延時間を追加
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">
       <LoadTimeTracker sectionName="チャート" loadTime={loadTime} />
-      {chartElement}
+      <RevenueChartMock />
     </div>
   );
 }

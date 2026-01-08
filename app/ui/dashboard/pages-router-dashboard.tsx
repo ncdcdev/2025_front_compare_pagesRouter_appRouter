@@ -31,13 +31,15 @@ export default function PagesRouterDashboard() {
     Promise.all([
       fetch("/api/dashboard-data")
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
           setCardData(data.cardData);
           setLatestInvoices(data.latestInvoices);
         }),
       fetch("/api/revenue")
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
           setRevenue(data);
         }),
     ]).then(() => {
