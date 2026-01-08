@@ -28,29 +28,39 @@ export default function ComparePage() {
                 <tr className="border-b">
                   <td className="p-2 font-medium">レンダリング方式</td>
                   <td className="p-2 text-blue-600">
-                    ストリーミング（段階的）
+                    React Server Components + Streaming が標準
                   </td>
-                  <td className="p-2 text-orange-600">ブロッキング（一括）</td>
+                  <td className="p-2 text-orange-600">
+                    HTMLは一括返却（ストリーミング不可）
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="p-2 font-medium">スケルトンスクリーン</td>
-                  <td className="p-2 text-blue-600">各セクション個別表示</td>
-                  <td className="p-2 text-orange-600">全画面スケルトン</td>
+                  <td className="p-2 text-blue-600">
+                    loading.tsx + Suspense による ルート/セグメント単位
+                  </td>
+                  <td className="p-2 text-orange-600">自前実装（CSR）</td>
                 </tr>
                 <tr className="border-b">
                   <td className="p-2 font-medium">データ取得</td>
-                  <td className="p-2 text-blue-600">並列・非同期</td>
-                  <td className="p-2 text-orange-600">順次・同期</td>
+                  <td className="p-2 text-blue-600">
+                    コンポーネント単位で並列取得（RSC）
+                  </td>
+                  <td className="p-2 text-orange-600">
+                    ページ単位で取得（getServerSideProps）
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="p-2 font-medium">Time to First Byte</td>
                   <td className="p-2 text-blue-600">早い（部分表示）</td>
-                  <td className="p-2 text-orange-600">遅い（全データ待機）</td>
+                  <td className="p-2 text-orange-600">
+                    遅い（全HTML生成後に返却）
+                  </td>
                 </tr>
                 <tr>
                   <td className="p-2 font-medium">Suspense</td>
-                  <td className="p-2 text-blue-600">✅ サポート</td>
-                  <td className="p-2 text-orange-600">❌ 未サポート</td>
+                  <td className="p-2 text-blue-600">SSR対応</td>
+                  <td className="p-2 text-orange-600">CSRのみ</td>
                 </tr>
               </tbody>
             </table>
