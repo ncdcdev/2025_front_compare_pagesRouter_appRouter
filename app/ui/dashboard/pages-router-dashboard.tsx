@@ -5,7 +5,7 @@ import RevenueChartStatic from "@/app/ui/dashboard/revenue-chart-static";
 import LatestInvoicesClient from "@/app/ui/dashboard/latest-invoices-client";
 import { lusitana } from "@/app/ui/fonts";
 import { useEffect, useState } from "react";
-import DashboardSkeleton from "@/app/ui/skeletons";
+import { PagesRouterDashboardSkeleton } from "@/app/ui/skeletons";
 import { LatestInvoice, Revenue } from "@/app/lib/definitions";
 
 interface CardData {
@@ -54,10 +54,10 @@ export default function PagesRouterDashboard() {
         <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
           Dashboard (Pages Router)
         </h1>
-        <div className="mb-2 text-xs text-gray-500">
+        <div className="mt-2 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
           ⏳ ブロッキング: 全データ取得後に一括表示
         </div>
-        <DashboardSkeleton />
+        <PagesRouterDashboardSkeleton />
       </main>
     );
   }
@@ -78,8 +78,8 @@ export default function PagesRouterDashboard() {
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard (Pages Router)
       </h1>
-      <div className="mb-2 text-xs text-gray-500">
-        ✅ 全データ取得完了 ({loadTime?.toFixed(0)}ms)
+      <div className="mb-2 flex items-center gap-1.5 rounded-md bg-green-50 text-green-700 px-2 py-0.5 text-xs">
+        ✅ 全データ 取得完了 ({loadTime?.toFixed(0)}ms)
       </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <Card title="Collected" value={totalPaidInvoices} type="collected" />

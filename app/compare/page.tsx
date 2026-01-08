@@ -1,6 +1,5 @@
 import AppRouterDashboard from "@/app/ui/dashboard/app-router-dashboard";
 import PagesRouterDashboard from "@/app/ui/dashboard/pages-router-dashboard";
-import Link from "next/link";
 import { Suspense } from "react";
 import DashboardSkeleton from "@/app/ui/skeletons";
 
@@ -28,29 +27,29 @@ export default function ComparePage() {
               <tbody>
                 <tr className="border-b">
                   <td className="p-2 font-medium">レンダリング方式</td>
-                  <td className="p-2 text-green-600">
+                  <td className="p-2 text-blue-600">
                     ストリーミング（段階的）
                   </td>
                   <td className="p-2 text-orange-600">ブロッキング（一括）</td>
                 </tr>
                 <tr className="border-b">
                   <td className="p-2 font-medium">スケルトンスクリーン</td>
-                  <td className="p-2 text-green-600">各セクション個別表示</td>
+                  <td className="p-2 text-blue-600">各セクション個別表示</td>
                   <td className="p-2 text-orange-600">全画面スケルトン</td>
                 </tr>
                 <tr className="border-b">
                   <td className="p-2 font-medium">データ取得</td>
-                  <td className="p-2 text-green-600">並列・非同期</td>
+                  <td className="p-2 text-blue-600">並列・非同期</td>
                   <td className="p-2 text-orange-600">順次・同期</td>
                 </tr>
                 <tr className="border-b">
                   <td className="p-2 font-medium">Time to First Byte</td>
-                  <td className="p-2 text-green-600">早い（部分表示）</td>
+                  <td className="p-2 text-blue-600">早い（部分表示）</td>
                   <td className="p-2 text-orange-600">遅い（全データ待機）</td>
                 </tr>
                 <tr>
                   <td className="p-2 font-medium">Suspense</td>
-                  <td className="p-2 text-green-600">✅ サポート</td>
+                  <td className="p-2 text-blue-600">✅ サポート</td>
                   <td className="p-2 text-orange-600">❌ 未サポート</td>
                 </tr>
               </tbody>
@@ -69,6 +68,9 @@ export default function ComparePage() {
               <p className="text-sm text-gray-500 mt-1">
                 Server Components + Suspense + Streaming
               </p>
+              <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                💡 各セクションが準備でき次第、順次表示されます
+              </div>
             </div>
             <Suspense fallback={<DashboardSkeleton />}>
               <AppRouterDashboard />
@@ -76,14 +78,17 @@ export default function ComparePage() {
           </div>
 
           {/* Pages Router版 */}
-          <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-green-500">
+          <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500">
             <div className="mb-4 pb-4 border-b">
-              <h2 className="text-xl font-semibold text-green-600">
+              <h2 className="text-xl font-semibold text-orange-600">
                 Pages Router (従来)
               </h2>
               <p className="text-sm text-gray-500 mt-1">
                 getServerSideProps + ブロッキングレンダリング
               </p>
+              <div className="mt-2 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                ⏳ 全データ取得完了まで待機します
+              </div>
             </div>
             <PagesRouterDashboard />
           </div>
@@ -92,23 +97,84 @@ export default function ComparePage() {
         {/* 説明セクション */}
         <div className="mt-8 bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-4">観察ポイント</h3>
-          <ul className="space-y-2 text-sm text-gray-700">
-            <li>
-              <strong>App Router:</strong>{" "}
-              各セクション（カード、チャート、請求書）が準備でき次第、順次表示されます。
-              ユーザーは早い段階でコンテンツを見ることができます。
-            </li>
-            <li>
-              <strong>Pages Router:</strong>{" "}
-              全データ取得が完了するまで、スケルトンスクリーンが表示されます。
-              すべてのデータが揃ってから一括で表示されます。
-            </li>
-            <li>
-              <strong>パフォーマンス:</strong> App RouterはTime to First
-              Byte（TTFB）が早く、
-              ユーザー体験が向上します。特に遅いデータソースがある場合、違いが顕著に現れます。
-            </li>
-          </ul>
+          <div className="space-y-4 text-sm text-gray-700">
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-semibold text-blue-900 mb-2">
+                ✨ App Router (Suspense使用)
+              </h4>
+              <ul className="space-y-1 ml-4 list-disc">
+                <li>
+                  各セクション（カード、チャート、請求書）が
+                  <strong className="text-blue-700">
+                    準備でき次第、順次表示
+                  </strong>
+                  されます
+                </li>
+                <li>
+                  各セクションの上に
+                  <strong className="text-blue-700">
+                    ロード完了の通知とロード時間
+                  </strong>
+                  が表示されます
+                </li>
+                <li>
+                  ロード中は
+                  <strong className="text-blue-700">
+                    スケルトンスクリーン
+                  </strong>
+                  が表示され、どのセクションがロード中かが分かります
+                </li>
+                <li>
+                  ユーザーは
+                  <strong className="text-blue-700">
+                    早い段階でコンテンツを見ることができ
+                  </strong>
+                  、段階的に情報が増えていく様子を体験できます
+                </li>
+              </ul>
+            </div>
+            <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+              <h4 className="font-semibold text-orange-900 mb-2">
+                ⏳ Pages Router (従来方式)
+              </h4>
+              <ul className="space-y-1 ml-4 list-disc">
+                <li>
+                  <strong className="text-orange-700">
+                    全データ取得が完了するまで
+                  </strong>
+                  、スケルトンスクリーンが表示されます
+                </li>
+                <li>
+                  すべてのデータが揃ってから
+                  <strong className="text-orange-700">一括で表示</strong>
+                  されます
+                </li>
+                <li>
+                  最も遅いデータソースに依存するため、
+                  <strong className="text-orange-700">
+                    全体のロード時間が長くなる
+                  </strong>
+                  可能性があります
+                </li>
+              </ul>
+            </div>
+            <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+              <h4 className="font-semibold text-green-900 mb-2">
+                🚀 パフォーマンス比較
+              </h4>
+              <p>
+                App Routerは
+                <strong className="text-green-700">
+                  Time to First Byte（TTFB）が早く
+                </strong>
+                、
+                ユーザー体験が向上します。特に遅いデータソースがある場合、違いが顕著に現れます。
+                ページをリロードして、左側（App
+                Router）では各セクションが順次表示され、 右側（Pages
+                Router）では全データ取得後に一括表示される様子を観察してください。
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -20,24 +20,36 @@ export function CardSkeleton() {
 
 export function CardsSkeleton() {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <CardSkeleton />
-      <CardSkeleton />
-      <CardSkeleton />
-      <CardSkeleton />
+    <div>
+      <div className="mb-2 flex items-center gap-1.5 rounded-md bg-blue-50 px-2 py-0.5 text-xs">
+        <span className="font-medium text-blue-700">⏳ カード ロード中...</span>
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+      </div>
     </div>
   );
 }
 
 export function RevenueChartSkeleton() {
   return (
-    <div className={`${shimmer} relative w-full overflow-hidden md:col-span-4`}>
-      <h2 className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
-      <div className="rounded-xl bg-gray-50 p-4">
-        <div className="sm:grid-cols-13 mt-0 grid min-h-[350px] grid-cols-12 items-end gap-2 rounded-md bg-white p-4 md:gap-4" />
-        <div className="flex items-center pb-2 pt-6">
-          <div className="h-5 w-5 rounded-full bg-gray-200" />
-          <div className="ml-2 h-4 w-20 rounded-md bg-gray-200" />
+    <div className="w-full md:col-span-4">
+      <div className="mb-2 flex items-center gap-1.5 rounded-md bg-blue-50 px-2 py-0.5 text-xs">
+        <span className="font-medium text-blue-700">
+          ⏳ チャート ロード中...
+        </span>
+      </div>
+      <div className={`${shimmer} relative w-full overflow-hidden`}>
+        <h2 className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
+        <div className="rounded-xl bg-gray-50 p-4">
+          <div className="sm:grid-cols-13 mt-0 grid min-h-[350px] grid-cols-12 items-end gap-2 rounded-md bg-white p-4 md:gap-4" />
+          <div className="flex items-center pb-2 pt-6">
+            <div className="h-5 w-5 rounded-full bg-gray-200" />
+            <div className="ml-2 h-4 w-20 rounded-md bg-gray-200" />
+          </div>
         </div>
       </div>
     </div>
@@ -61,21 +73,26 @@ export function InvoiceSkeleton() {
 
 export function LatestInvoicesSkeleton() {
   return (
-    <div
-      className={`${shimmer} relative flex w-full flex-col overflow-hidden md:col-span-4`}
-    >
-      <h2 className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
-      <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
-        <div className="bg-white px-6">
-          <InvoiceSkeleton />
-          <InvoiceSkeleton />
-          <InvoiceSkeleton />
-          <InvoiceSkeleton />
-          <InvoiceSkeleton />
-        </div>
-        <div className="flex items-center pb-2 pt-6">
-          <div className="h-5 w-5 rounded-full bg-gray-200" />
-          <div className="ml-2 h-4 w-20 rounded-md bg-gray-200" />
+    <div className="flex w-full flex-col md:col-span-4">
+      <div className="mb-2 flex items-center gap-1.5 rounded-md bg-blue-50 px-2 py-0.5 text-xs">
+        <span className="font-medium text-blue-700">⏳ 請求書 ロード中...</span>
+      </div>
+      <div
+        className={`${shimmer} relative flex w-full flex-col overflow-hidden`}
+      >
+        <h2 className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
+        <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
+          <div className="bg-white px-6">
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+          </div>
+          <div className="flex items-center pb-2 pt-6">
+            <div className="h-5 w-5 rounded-full bg-gray-200" />
+            <div className="ml-2 h-4 w-20 rounded-md bg-gray-200" />
+          </div>
         </div>
       </div>
     </div>
@@ -97,6 +114,67 @@ export default function DashboardSkeleton() {
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
         <RevenueChartSkeleton />
         <LatestInvoicesSkeleton />
+      </div>
+    </>
+  );
+}
+
+// Pages Router用のスケルトン（ローディング表記なし）
+export function RevenueChartSkeletonWithoutLabel() {
+  return (
+    <div className="w-full md:col-span-4">
+      <div className={`${shimmer} relative w-full overflow-hidden`}>
+        <h2 className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
+        <div className="rounded-xl bg-gray-50 p-4">
+          <div className="sm:grid-cols-13 mt-0 grid min-h-[350px] grid-cols-12 items-end gap-2 rounded-md bg-white p-4 md:gap-4" />
+          <div className="flex items-center pb-2 pt-6">
+            <div className="h-5 w-5 rounded-full bg-gray-200" />
+            <div className="ml-2 h-4 w-20 rounded-md bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function LatestInvoicesSkeletonWithoutLabel() {
+  return (
+    <div className="flex w-full flex-col md:col-span-4">
+      <div
+        className={`${shimmer} relative flex w-full flex-col overflow-hidden`}
+      >
+        <h2 className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
+        <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
+          <div className="bg-white px-6">
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+            <InvoiceSkeleton />
+          </div>
+          <div className="flex items-center pb-2 pt-6">
+            <div className="h-5 w-5 rounded-full bg-gray-200" />
+            <div className="ml-2 h-4 w-20 rounded-md bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Pages Router用のスケルトン（タイトルスケルトンなし、ローディング表記なし）
+export function PagesRouterDashboardSkeleton() {
+  return (
+    <>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        <RevenueChartSkeletonWithoutLabel />
+        <LatestInvoicesSkeletonWithoutLabel />
       </div>
     </>
   );

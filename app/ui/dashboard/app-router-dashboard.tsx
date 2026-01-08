@@ -9,6 +9,7 @@ import {
   LatestInvoicesSkeleton,
 } from "@/app/ui/skeletons";
 import { LatestInvoice } from "@/app/lib/definitions";
+import { LoadTimeTracker } from "./load-time-tracker";
 
 // モックデータ（比較ページ用）
 const mockCardData = {
@@ -64,7 +65,9 @@ async function DelayedLatestInvoices() {
 }
 
 async function CardsSection() {
+  const startTime = Date.now();
   const cardData = await DelayedCardData();
+  const loadTime = Date.now() - startTime;
   const {
     totalPaidInvoices,
     totalPendingInvoices,
@@ -73,22 +76,45 @@ async function CardsSection() {
   } = cardData;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <Card title="Collected" value={totalPaidInvoices} type="collected" />
-      <Card title="Pending" value={totalPendingInvoices} type="pending" />
-      <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-      <Card
-        title="Total Customers"
-        value={numberOfCustomers}
-        type="customers"
-      />
+    <div className="animate-fade-in">
+      <LoadTimeTracker sectionName="カード" loadTime={loadTime} />
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Card title="Collected" value={totalPaidInvoices} type="collected" />
+        <Card title="Pending" value={totalPendingInvoices} type="pending" />
+        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+        <Card
+          title="Total Customers"
+          value={numberOfCustomers}
+          type="customers"
+        />
+      </div>
     </div>
   );
 }
 
 async function InvoicesSection() {
+  const startTime = Date.now();
   const latestInvoices = await DelayedLatestInvoices();
-  return <LatestInvoices latestInvoices={latestInvoices} />;
+  const loadTime = Date.now() - startTime;
+  return (
+    <div className="animate-fade-in">
+      <LoadTimeTracker sectionName="請求書" loadTime={loadTime} />
+      <LatestInvoices latestInvoices={latestInvoices} />
+    </div>
+  );
+}
+
+async function RevenueChartWithTracker() {
+  const startTime = Date.now();
+  // RevenueChartMockは非同期コンポーネントなので、awaitで待機
+  const chartElement = await RevenueChartMock();
+  const loadTime = Date.now() - startTime;
+  return (
+    <div className="animate-fade-in">
+      <LoadTimeTracker sectionName="チャート" loadTime={loadTime} />
+      {chartElement}
+    </div>
+  );
 }
 
 export default function AppRouterDashboard() {
@@ -97,9 +123,6 @@ export default function AppRouterDashboard() {
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard (App Router)
       </h1>
-      <div className="mb-2 text-xs text-gray-500">
-        ⚡ ストリーミング: 各セクションが準備でき次第表示
-      </div>
 
       {/* カードセクション - Suspenseでラップ */}
       <Suspense fallback={<CardsSkeleton />}>
@@ -108,14 +131,18 @@ export default function AppRouterDashboard() {
 
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
         {/* チャートセクション - Suspenseでラップ */}
-        <Suspense fallback={<RevenueChartSkeleton />}>
-          <RevenueChartMock />
-        </Suspense>
+        <div className="md:col-span-4">
+          <Suspense fallback={<RevenueChartSkeleton />}>
+            <RevenueChartWithTracker />
+          </Suspense>
+        </div>
 
         {/* 請求書セクション - Suspenseでラップ */}
-        <Suspense fallback={<LatestInvoicesSkeleton />}>
-          <InvoicesSection />
-        </Suspense>
+        <div className="md:col-span-4">
+          <Suspense fallback={<LatestInvoicesSkeleton />}>
+            <InvoicesSection />
+          </Suspense>
+        </div>
       </div>
     </main>
   );
