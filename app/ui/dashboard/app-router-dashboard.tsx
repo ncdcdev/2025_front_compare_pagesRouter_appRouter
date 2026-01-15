@@ -8,65 +8,26 @@ import {
   RevenueChartSkeleton,
   LatestInvoicesSkeleton,
 } from "@/app/ui/skeletons";
-import { LatestInvoice } from "@/app/lib/definitions";
+
 import { LoadTimeTracker } from "./load-time-tracker";
 
-// モックデータ（比較ページ用）
-const mockCardData = {
-  totalPaidInvoices: "$52,250.00",
-  totalPendingInvoices: "$12,555.00",
-  numberOfInvoices: 15,
-  numberOfCustomers: 8,
-};
-
-const mockLatestInvoices: LatestInvoice[] = [
-  {
-    id: "1",
-    name: "Delba de Oliveira",
-    email: "delba@oliveira.com",
-    amount: "$2,000.00",
-  },
-  {
-    id: "2",
-    name: "Lee Robinson",
-    email: "lee@robinson.com",
-    amount: "$1,500.00",
-  },
-  {
-    id: "3",
-    name: "Hector Simpson",
-    email: "hector@simpson.com",
-    amount: "$1,200.00",
-  },
-  {
-    id: "4",
-    name: "Steven Tey",
-    email: "steven@tey.com",
-    amount: "$1,000.00",
-  },
-  {
-    id: "5",
-    name: "Steph Dietz",
-    email: "steph@dietz.com",
-    amount: "$800.00",
-  },
-];
-
-async function DelayedCardData() {
-  // 意図的に遅延を追加（ストリーミング可視化用 - 最終的な表示時間を統一）
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return mockCardData;
+async function GetCardData() {
+  return await fetch("/api/card").then((res) => res.json());
 }
 
-async function DelayedLatestInvoices() {
-  // 意図的に遅延を追加（ストリーミング可視化用 - ゆっくり観察できるように延長）
-  await new Promise((resolve) => setTimeout(resolve, 6000));
-  return mockLatestInvoices;
+async function GetRevenue() {
+  return await fetch("/api/revenue").then((res) => res.json());
+}
+
+async function GetLatestInvoices() {
+  return await fetch("/api/invoices").then((res) => res.json());
 }
 
 async function CardsSection() {
   const startTime = Date.now();
-  const cardData = await DelayedCardData();
+  const cardData = await GetCardData();
+  const revenue = await GetRevenue();
+  const latestInvoices = await GetLatestInvoices();
   const loadTime = Date.now() - startTime;
   const {
     totalPaidInvoices,
@@ -94,7 +55,7 @@ async function CardsSection() {
 
 async function InvoicesSection() {
   const startTime = Date.now();
-  const latestInvoices = await DelayedLatestInvoices();
+  const latestInvoices = await GetLatestInvoices();
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">

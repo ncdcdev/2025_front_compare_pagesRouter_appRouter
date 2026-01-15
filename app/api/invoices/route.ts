@@ -1,13 +1,3 @@
-import { NextResponse } from "next/server";
-
-// モックデータを使用（比較ページ用）
-const mockCardData = {
-  totalPaidInvoices: "$52,250.00",
-  totalPendingInvoices: "$12,555.00",
-  numberOfInvoices: 15,
-  numberOfCustomers: 8,
-};
-
 const mockLatestInvoices = [
   {
     id: "1",
@@ -43,11 +33,8 @@ const mockLatestInvoices = [
 ];
 
 export async function GET() {
-  // 意図的に遅延を追加（比較用 - 請求書データが長めのため2秒）
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // 意図的に遅延を追加（比較用）
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  return NextResponse.json({
-    cardData: mockCardData,
-    latestInvoices: mockLatestInvoices,
-  });
+  return Response.json(mockLatestInvoices);
 }

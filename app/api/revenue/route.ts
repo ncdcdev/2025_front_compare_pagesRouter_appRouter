@@ -17,8 +17,8 @@ const mockRevenue = [
 ];
 
 export async function GET() {
-  // 意図的に遅延を追加（比較用 - チャートデータは中程度の1秒）
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // 意図的に遅延を追加（比較用）
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   return NextResponse.json(mockRevenue);
 }
