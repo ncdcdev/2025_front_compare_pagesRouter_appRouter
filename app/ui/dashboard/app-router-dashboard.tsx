@@ -10,24 +10,39 @@ import {
 } from "@/app/ui/skeletons";
 
 import { LoadTimeTracker } from "./load-time-tracker";
+import { headers } from "next/headers";
+
+async function getBaseUrl() {
+  const headersList = await headers();
+  const host = headersList.get("host") || "localhost:3000";
+  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+  return `${protocol}://${host}`;
+}
 
 async function GetCardData() {
-  return await fetch("/api/card").then((res) => res.json());
+  const baseUrl = await getBaseUrl();
+  return await fetch(`${baseUrl}/api/card`, {
+    cache: "no-store",
+  }).then((res) => res.json());
 }
 
 async function GetRevenue() {
-  return await fetch("/api/revenue").then((res) => res.json());
+  const baseUrl = await getBaseUrl();
+  return await fetch(`${baseUrl}/api/revenue`, {
+    cache: "no-store",
+  }).then((res) => res.json());
 }
 
 async function GetLatestInvoices() {
-  return await fetch("/api/invoices").then((res) => res.json());
+  const baseUrl = await getBaseUrl();
+  return await fetch(`${baseUrl}/api/invoices`, {
+    cache: "no-store",
+  }).then((res) => res.json());
 }
 
 async function CardsSection() {
   const startTime = Date.now();
   const cardData = await GetCardData();
-  const revenue = await GetRevenue();
-  const latestInvoices = await GetLatestInvoices();
   const loadTime = Date.now() - startTime;
   const {
     totalPaidInvoices,
@@ -65,11 +80,9 @@ async function InvoicesSection() {
   );
 }
 
-async function RevenueChartWithTracker() {
+async function RevenueChartSection() {
   const startTime = Date.now();
-  // RevenueChartMockは非同期コンポーネントなので、JSXとして使用
-  // コンポーネント内の遅延（3000ms）を待機するため、同じ遅延時間を追加
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  const revenue = await GetRevenue();
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">
@@ -95,7 +108,7 @@ export default function AppRouterDashboard() {
         {/* チャートセクション - Suspenseでラップ */}
         <div className="md:col-span-4">
           <Suspense fallback={<RevenueChartSkeleton />}>
-            <RevenueChartWithTracker />
+            <RevenueChartSection />
           </Suspense>
         </div>
 

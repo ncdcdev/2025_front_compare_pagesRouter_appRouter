@@ -20,5 +20,5 @@ export async function GET() {
   // 意図的に遅延を追加（比較用）
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  return NextResponse.json(mockRevenue);
+  return Response.json(mockRevenue);
 }
