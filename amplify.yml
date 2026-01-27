@@ -11,21 +11,10 @@ frontend:
         - |
           if [ -d .next/standalone ]; then
             STANDALONE_DIR=$(find .next/standalone -maxdepth 1 -type d ! -path .next/standalone | head -1)
-            if [ -f "$STANDALONE_DIR/.next/required-server-files.json" ]; then
+            if [ -n "$STANDALONE_DIR" ] && [ -f "$STANDALONE_DIR/.next/required-server-files.json" ]; then
               cp "$STANDALONE_DIR/.next/required-server-files.json" .next/required-server-files.json
               echo "✓ required-server-files.json copied to .next/"
-            else
-              echo "⚠ required-server-files.json not found in standalone directory"
             fi
-          else
-            echo "⚠ .next/standalone directory not found"
-          fi
-          # ファイルの存在確認
-          if [ -f .next/required-server-files.json ]; then
-            echo "✓ .next/required-server-files.json exists"
-            ls -la .next/required-server-files.json
-          else
-            echo "✗ .next/required-server-files.json not found"
           fi
   artifacts:
     baseDirectory: .
