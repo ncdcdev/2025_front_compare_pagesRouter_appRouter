@@ -3,27 +3,12 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 import { lusitana } from "@/app/ui/fonts";
 import { Revenue } from "@/app/lib/definitions";
 
-// モックデータ（比較ページ用）
-const mockRevenue: Revenue[] = [
-  { month: "Jan", revenue: 2000 },
-  { month: "Feb", revenue: 1800 },
-  { month: "Mar", revenue: 2200 },
-  { month: "Apr", revenue: 2500 },
-  { month: "May", revenue: 2300 },
-  { month: "Jun", revenue: 3200 },
-  { month: "Jul", revenue: 3500 },
-  { month: "Aug", revenue: 3700 },
-  { month: "Sep", revenue: 2500 },
-  { month: "Oct", revenue: 2800 },
-  { month: "Nov", revenue: 3000 },
-  { month: "Dec", revenue: 4800 },
-];
 
-export default async function RevenueChartMock() {
+export default async function RevenueChartMock({ revenue }: { revenue: Revenue[] }) {
   // 遅延はRevenueChartWithTrackerで統一管理
 
   const chartHeight = 350;
-  const { yAxisLabels, topLabel } = generateYAxis(mockRevenue);
+  const { yAxisLabels, topLabel } = generateYAxis(revenue);
 
   return (
     <div className="w-full md:col-span-4">
@@ -41,7 +26,7 @@ export default async function RevenueChartMock() {
             ))}
           </div>
 
-          {mockRevenue.map((month) => (
+          {revenue.map((month) => (
             <div key={month.month} className="flex flex-col items-center gap-2">
               <div
                 className="w-full rounded-md bg-blue-300"

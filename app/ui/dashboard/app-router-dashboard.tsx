@@ -8,41 +8,13 @@ import {
   RevenueChartSkeleton,
   LatestInvoicesSkeleton,
 } from "@/app/ui/skeletons";
-
 import { LoadTimeTracker } from "./load-time-tracker";
-import { headers } from "next/headers";
+import { getCards, getInvoices, getRevenue } from "../../api";
 
-async function getBaseUrl() {
-  const headersList = await headers();
-  const host = headersList.get("host") || "localhost:3000";
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-  return `${protocol}://${host}`;
-}
-
-async function GetCardData() {
-  const baseUrl = await getBaseUrl();
-  return await fetch(`${baseUrl}/api/card`, {
-    cache: "no-store",
-  }).then((res) => res.json());
-}
-
-async function GetRevenue() {
-  const baseUrl = await getBaseUrl();
-  return await fetch(`${baseUrl}/api/revenue`, {
-    cache: "no-store",
-  }).then((res) => res.json());
-}
-
-async function GetLatestInvoices() {
-  const baseUrl = await getBaseUrl();
-  return await fetch(`${baseUrl}/api/invoices`, {
-    cache: "no-store",
-  }).then((res) => res.json());
-}
 
 async function CardsSection() {
   const startTime = Date.now();
-  const cardData = await GetCardData();
+  const cardData = await getCards();
   const loadTime = Date.now() - startTime;
   const {
     totalPaidInvoices,
@@ -70,7 +42,7 @@ async function CardsSection() {
 
 async function InvoicesSection() {
   const startTime = Date.now();
-  const latestInvoices = await GetLatestInvoices();
+  const latestInvoices = await getInvoices();
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">
@@ -82,12 +54,12 @@ async function InvoicesSection() {
 
 async function RevenueChartSection() {
   const startTime = Date.now();
-  const revenue = await GetRevenue();
+  const revenue = await getRevenue();
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">
       <LoadTimeTracker sectionName="チャート" loadTime={loadTime} />
-      <RevenueChartMock />
+      <RevenueChartMock revenue={revenue} />
     </div>
   );
 }
