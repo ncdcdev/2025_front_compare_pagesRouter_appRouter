@@ -1,8 +1,10 @@
 import AppRouterDashboard from "@/app/ui/dashboard/app-router-dashboard";
-import PagesRouterDashboard from "@/app/ui/dashboard/pages-router-dashboard";
 import { Suspense } from "react";
 import DashboardSkeleton from "@/app/ui/skeletons";
-import { PagesRouterIframe } from "@/pages/components/PagesRouterIframe";
+import { PagesRouterIframe } from "@/app/components/PagesRouterIframe";
+
+// 動的レンダリングを強制（APIルートを使用するため）
+export const dynamic = 'force-dynamic';
 
 export default function ComparePage() {
   return (

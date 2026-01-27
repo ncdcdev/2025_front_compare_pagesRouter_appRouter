@@ -1,5 +1,8 @@
 import PagesRouterDashboard from "@/app/ui/dashboard/pages-router-dashboard";
 
+// 動的レンダリングを強制（APIルートを使用するため）
+export const dynamic = 'force-dynamic';
+
 export default function PagesRouterPage() {
   return (
     <div className="min-h-screen p-8 bg-gray-50">

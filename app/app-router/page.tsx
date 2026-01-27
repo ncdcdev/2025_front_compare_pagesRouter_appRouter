@@ -2,6 +2,9 @@ import AppRouterDashboard from "@/app/ui/dashboard/app-router-dashboard";
 import { Suspense } from "react";
 import DashboardSkeleton from "@/app/ui/skeletons";
 
+// 動的レンダリングを強制（APIルートを使用するため）
+export const dynamic = 'force-dynamic';
+
 export default function AppRouterPage() {
   return (
     <div className="min-h-screen p-8 bg-gray-50">
@@ -26,5 +29,4 @@ export default function AppRouterPage() {
     </div>
   );
 }
-
 
