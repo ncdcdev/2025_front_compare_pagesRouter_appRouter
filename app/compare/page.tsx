@@ -2,6 +2,7 @@ import AppRouterDashboard from "@/app/ui/dashboard/app-router-dashboard";
 import PagesRouterDashboard from "@/app/ui/dashboard/pages-router-dashboard";
 import { Suspense } from "react";
 import DashboardSkeleton from "@/app/ui/skeletons";
+import { PagesRouterIframe } from "@/pages/components/PagesRouterIframe";
 
 export default function ComparePage() {
   return (
@@ -69,7 +70,12 @@ export default function ComparePage() {
 
         {/* ダッシュボード比較 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* App Router版 */}
+          {/* ********************************************************************
+           * App Router版
+           * RSC + Suspense による Streaming SSR を検証
+           * 各セクションはデータ取得完了次第、順次描画される
+           ********************************************************************
+           */}
           <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-blue-500">
             <div className="mb-4 pb-4 border-b">
               <h2 className="text-xl font-semibold text-blue-600">
@@ -87,21 +93,13 @@ export default function ComparePage() {
             </Suspense>
           </div>
 
-          {/* Pages Router版 */}
-          <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500">
-            <div className="mb-4 pb-4 border-b">
-              <h2 className="text-xl font-semibold text-orange-600">
-                Pages Router (従来)
-              </h2>
-              <p className="text-sm text-gray-500 mt-1">
-                getServerSideProps + ブロッキングレンダリング
-              </p>
-              <div className="mt-2 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
-                ⏳ 全データ取得完了まで待機します
-              </div>
-            </div>
-            <PagesRouterDashboard />
-          </div>
+          {/* ********************************************************************
+           * Pages Router版
+           * getServerSideProps によるページ単位のブロッキングSSRを検証
+           * HTML生成完了までレスポンスが返らない
+           ********************************************************************
+           */}
+          <PagesRouterIframe />
         </div>
 
         {/* 説明セクション */}
