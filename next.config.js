@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: "export", // APIルートを使用するためコメントアウト
+  // Amplify SSRサポートのためstandaloneモードを有効化
+  output: 'standalone',
   images: {
     unoptimized: true,
   },
