@@ -1,5 +1,5 @@
 // カード一覧
-export const mockCardData = {
+const mockCardData = {
   totalPaidInvoices: "$52,250.00",
   totalPendingInvoices: "$12,555.00",
   numberOfInvoices: 15,
