@@ -7,17 +7,8 @@ frontend:
     build:
       commands:
         - yarn run build
-        # Amplify SSRサポートのため、required-server-files.jsonを適切な場所にコピー
-        - |
-          if [ -d .next/standalone ]; then
-            STANDALONE_DIR=$(find .next/standalone -maxdepth 1 -type d ! -path .next/standalone | head -1)
-            if [ -n "$STANDALONE_DIR" ] && [ -f "$STANDALONE_DIR/.next/required-server-files.json" ]; then
-              cp "$STANDALONE_DIR/.next/required-server-files.json" .next/required-server-files.json
-              echo "✓ required-server-files.json copied to .next/"
-            fi
-          fi
   artifacts:
-    baseDirectory: .
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
