@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { Card } from "@/app/ui/dashboard/cards";
 import RevenueChartStatic from "@/app/ui/dashboard/revenue-chart-static";
 import { LatestInvoice, Revenue } from "@/app/lib/definitions";
-import { getCards, getInvoices, getRevenue } from "../app/api";
+import { getCardsData, getInvoicesData, getRevenueData } from "../app/api";
 import LatestInvoicesClient from "@/app/ui/dashboard/latest-invoices-client";
 import { lusitana } from "@/app/ui/fonts";
 
@@ -28,9 +28,9 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async (
   const startTime = Date.now();
 
   const req = context.req;
-  const cardData = await getCards(req);
-  const latestInvoices = await getInvoices(req);
-  const revenue = await getRevenue(req);
+  const cardData = await getCardsData(req);
+  const latestInvoices = await getInvoicesData(req);
+  const revenue = await getRevenueData(req);
   const loadTime = Date.now() - startTime;
 
   // サーバーサイドではデータ取得が完了してからpropsを返すため、isLoadingは常にfalse

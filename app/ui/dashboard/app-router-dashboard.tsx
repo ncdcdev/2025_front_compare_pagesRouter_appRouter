@@ -9,12 +9,12 @@ import {
   LatestInvoicesSkeleton,
 } from "@/app/ui/skeletons";
 import { LoadTimeTracker } from "./load-time-tracker";
-import { getCards, getInvoices, getRevenue } from "../../api";
+import { getCardsData, getInvoicesData, getRevenueData } from "../../api";
 
 
 async function CardsSection() {
   const startTime = Date.now();
-  const cardData = await getCards();
+  const cardData = await getCardsData();
   const loadTime = Date.now() - startTime;
   const {
     totalPaidInvoices,
@@ -42,7 +42,7 @@ async function CardsSection() {
 
 async function InvoicesSection() {
   const startTime = Date.now();
-  const latestInvoices = await getInvoices();
+  const latestInvoices = await getInvoicesData();
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">
@@ -54,7 +54,7 @@ async function InvoicesSection() {
 
 async function RevenueChartSection() {
   const startTime = Date.now();
-  const revenue = await getRevenue();
+  const revenue = await getRevenueData();
   const loadTime = Date.now() - startTime;
   return (
     <div className="animate-fade-in">

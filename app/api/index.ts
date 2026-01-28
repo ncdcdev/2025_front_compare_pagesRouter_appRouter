@@ -1,5 +1,8 @@
 import { Cards, LatestInvoice, Revenue } from "../lib/definitions";
 import { IncomingMessage } from "http";
+import getCards from "./cards/getCards";
+import getRevenue from "./revenue/getRevenue";
+import getInvoices from "./invoices/getInvoices";
 
 // サーバーサイドで絶対URLを構築するヘルパー関数
 function getAbsoluteUrl(path: string, req?: IncomingMessage): string {
@@ -18,16 +21,17 @@ function getAbsoluteUrl(path: string, req?: IncomingMessage): string {
 }
 
 /**
- * データ取得関数
- * 
- * 【比較の目的】
- * - App Router (Server Components): HTTPリクエストでAPIルートを呼び出す（headers()を使用）
- * - Pages Router (getServerSideProps): HTTPリクエストでAPIルートを呼び出す（reqを使用）
- * 
- * 両方ともHTTPリクエストを使用することで、公平な比較が可能になります。
- * App Routerの優位性（ストリーミング、並列実行）が明確になります。
+ * カードデータを取得
+ * App Router側（reqがundefined）は直接呼び出し
+ * Pages Router側はAPIルートを呼び出す
  */
-export async function getCards(req?: IncomingMessage): Promise<Cards> {
+export async function getCardsData(req?: IncomingMessage): Promise<Cards> {
+  // App Router側（reqがundefined）は直接呼び出し
+  if (!req) {
+    return await getCards();
+  }
+  
+  // Pages Router側はAPIルートを呼び出す
   const url = getAbsoluteUrl("/api/cards", req);
   const res = await fetch(url, {
     cache: "no-store",
@@ -35,7 +39,14 @@ export async function getCards(req?: IncomingMessage): Promise<Cards> {
   return res.json();
 }
 
-export async function getRevenue(req?: IncomingMessage): Promise<Revenue[]> {
+// 収益データを取得
+ export async function getRevenueData(req?: IncomingMessage): Promise<Revenue[]> {
+  // App Router側（reqがundefined）は直接呼び出し
+  if (!req) {
+    return await getRevenue();
+  }
+  
+  // Pages Router側はAPIルートを呼び出す
   const url = getAbsoluteUrl("/api/revenue", req);
   const res = await fetch(url, {
     cache: "no-store",
@@ -43,7 +54,15 @@ export async function getRevenue(req?: IncomingMessage): Promise<Revenue[]> {
   return res.json();
 }
 
-export async function getInvoices(req?: IncomingMessage): Promise<LatestInvoice[]> {
+
+// 最新請求書データを取得
+export async function getInvoicesData(req?: IncomingMessage): Promise<LatestInvoice[]> {
+  // App Router側（reqがundefined）は直接呼び出し
+  if (!req) {
+    return await getInvoices();
+  }
+  
+  // Pages Router側はAPIルートを呼び出す
   const url = getAbsoluteUrl("/api/invoices", req);
   const res = await fetch(url, {
     cache: "no-store",
