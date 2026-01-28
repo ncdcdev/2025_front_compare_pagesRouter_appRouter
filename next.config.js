@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Amplify SSRサポートのためstandaloneモードを有効化
-  output: 'standalone',
   images: {
     unoptimized: true,
   },
