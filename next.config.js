@@ -1,14 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone', // ← Amplify SSRで必須 
   images: {
     unoptimized: true,
-  },
-  // ストリーミングを有効化（Amplifyでも可能な限り動作するように）
-  experimental: {
-    // React Server Componentsのストリーミングを有効化
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
   },
   // Server Componentsでpostgresを外部化（Next.js 16ではserverExternalPackagesを使用）
   serverExternalPackages: ['postgres'],

@@ -4,6 +4,14 @@ frontend:
     preBuild:
       commands:
         - yarn install
+        # Amplify Gen2: バックエンドリソースをデプロイ（オプション）
+        # 注意: 初回はAmplifyコンソールでアプリを接続する必要があります
+        - |
+          if [ -f "amplify/backend.ts" ]; then
+            echo "Amplify Gen2 backend detected"
+            # Gen2のバックエンドリソースがある場合の処理
+            # npx ampx pipeline-deploy コマンドはAmplifyコンソールで自動実行されます
+          fi
     build:
       commands:
         - yarn run build
@@ -15,15 +23,5 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-  customHeaders:
-    - pattern: '**/*'
-      headers:
-        - key: 'Cache-Control'
-          value: 'public, max-age=0, must-revalidate'
-        - key: 'X-Content-Type-Options'
-          value: 'nosniff'
-        - key: 'X-Frame-Options'
-          value: 'DENY'
-        - key: 'X-XSS-Protection'
-          value: '1; mode=block'
+      - amplify_outputs.json
 
