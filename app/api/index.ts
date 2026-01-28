@@ -11,9 +11,10 @@ function getAbsoluteUrl(path: string, req?: IncomingMessage): string {
   }
   
   // App Router (Server Components) から呼び出される場合
-  // 環境変数がundefinedの場合はlocalhost:3000を使用
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  return `${baseUrl}${path}`;
+  // Next.js 13+では、Server Components内で相対URLを使用すると
+  // 自動的に内部URL解決が行われるため、相対URLを返す
+  // これにより、デプロイ環境でも環境変数の設定が不要になる
+  return path;
 }
 
 /**
