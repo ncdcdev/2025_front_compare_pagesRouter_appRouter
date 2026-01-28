@@ -6,9 +6,8 @@ const mockCardData = {
   numberOfCustomers: 8,
 };
 
+// Pages Routerから呼び出される場合
 export async function GET() {
-  // 意図的に遅延を追加（比較用）
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  await new Promise((resolve) => setTimeout(resolve, 500));
   return Response.json(mockCardData);
 }

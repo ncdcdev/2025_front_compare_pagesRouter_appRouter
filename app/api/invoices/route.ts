@@ -1,4 +1,7 @@
-const mockLatestInvoices = [
+import { LatestInvoice } from "@/app/lib/definitions";
+
+
+const mockLatestInvoices: LatestInvoice[] = [
   {
     id: "1",
     name: "Delba de Oliveira",
@@ -15,7 +18,6 @@ const mockLatestInvoices = [
     id: "3",
     name: "Hector Simpson",
     email: "hector@simpson.com",
-    image_url: "/customers/hector-simpson.png",
     amount: "$1,200.00",
   },
   {
@@ -32,9 +34,8 @@ const mockLatestInvoices = [
   },
 ];
 
+// Pages Routerから呼び出される場合
 export async function GET() {
-  // 意図的に遅延を追加（比較用）
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   return Response.json(mockLatestInvoices);
 }

@@ -5,8 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Server Componentsでpostgresを外部化
-  serverComponentsExternalPackages: ['postgres'],
+  // Server Componentsでpostgresを外部化（Next.js 16ではserverExternalPackagesを使用）
+  serverExternalPackages: ['postgres'],
   webpack: (config, { isServer }) => {
     // クライアント側でpostgresとNode.js組み込みモジュールを外部化
     if (!isServer) {

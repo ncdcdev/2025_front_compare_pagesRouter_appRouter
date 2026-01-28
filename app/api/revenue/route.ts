@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { Revenue } from "@/app/lib/definitions";
 
 // モックデータを使用（比較ページ用）
-const mockRevenue = [
+const mockRevenue: Revenue[] = [
   { month: "Jan", revenue: 2000 },
   { month: "Feb", revenue: 1800 },
   { month: "Mar", revenue: 2200 },
@@ -16,9 +16,8 @@ const mockRevenue = [
   { month: "Dec", revenue: 4800 },
 ];
 
+// Pages Routerから呼び出される場合
 export async function GET() {
-  // 意図的に遅延を追加（比較用）
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
+  await new Promise((resolve) => setTimeout(resolve, 1500));
   return Response.json(mockRevenue);
 }
