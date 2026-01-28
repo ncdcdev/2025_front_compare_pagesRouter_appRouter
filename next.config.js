@@ -28,6 +28,8 @@ const nextConfig = {
     }
     return config;
   },
+  // Turbopack設定（空の設定でエラーを回避）
+  turbopack: {},
 };
 
 module.exports = nextConfig;
