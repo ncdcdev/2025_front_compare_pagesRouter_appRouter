@@ -1,23 +1,7 @@
-import { Revenue } from "@/app/lib/definitions";
-
-// モックデータを使用（比較ページ用）
-const mockRevenue: Revenue[] = [
-  { month: "Jan", revenue: 2000 },
-  { month: "Feb", revenue: 1800 },
-  { month: "Mar", revenue: 2200 },
-  { month: "Apr", revenue: 2500 },
-  { month: "May", revenue: 2300 },
-  { month: "Jun", revenue: 3200 },
-  { month: "Jul", revenue: 3500 },
-  { month: "Aug", revenue: 3700 },
-  { month: "Sep", revenue: 2500 },
-  { month: "Oct", revenue: 2800 },
-  { month: "Nov", revenue: 3000 },
-  { month: "Dec", revenue: 4800 },
-];
+import { fetchRevenueDirect } from "./getRevenue";
 
 // Pages Routerから呼び出される場合
 export async function GET() {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-  return Response.json(mockRevenue);
+  const revenue = await fetchRevenueDirect();
+  return Response.json(revenue);
 }
