@@ -1,10 +1,15 @@
 import { GetServerSideProps } from "next";
-import { Card } from "@/app/ui/dashboard/cards";
-import RevenueChartStatic from "@/app/ui/dashboard/revenue-chart-static";
 import { LatestInvoice, Revenue } from "@/app/lib/definitions";
-import { getCards, getInvoices, getRevenue } from "../app/api";
-import LatestInvoicesClient from "@/app/ui/dashboard/latest-invoices-client";
+import { getCards, getInvoices, getRevenue } from "@/app/api";
 import { lusitana } from "@/app/ui/fonts";
+import RevenueChartStatic from "@/app/ui/dashboard/revenue-chart-static";
+import LatestInvoicesClient from "@/app/ui/dashboard/latest-invoices-client";
+import {
+  LoadStatusBadge,
+  CardSection,
+  DashboardGrid,
+  ChartContainer,
+} from "@/components/pages-router";
 
 interface CardData {
   totalPaidInvoices: string;
@@ -18,29 +23,28 @@ interface DashboardProps {
   latestInvoices: LatestInvoice[];
   revenue: Revenue[];
   loadTime: number;
-  isLoading: boolean;
 }
 
-// Pages Routerの実際の実装: getServerSidePropsで全データを取得してから一括レンダリング
 export const getServerSideProps: GetServerSideProps<DashboardProps> = async (
-  context,
+  context
 ) => {
   const startTime = Date.now();
 
   const req = context.req;
-  const cardData = await getCards(req);
-  const latestInvoices = await getInvoices(req);
-  const revenue = await getRevenue(req);
+  const [cardData, latestInvoices, revenue] = await Promise.all([
+    getCards(req),
+    getInvoices(req),
+    getRevenue(req),
+  ]);
+
   const loadTime = Date.now() - startTime;
 
-  // サーバーサイドではデータ取得が完了してからpropsを返すため、isLoadingは常にfalse
   return {
     props: {
       cardData,
       latestInvoices,
       revenue,
       loadTime,
-      isLoading: false,
     },
   };
 };
@@ -51,40 +55,21 @@ export default function Dashboard({
   revenue,
   loadTime,
 }: DashboardProps) {
-  const {
-    totalPaidInvoices,
-    totalPendingInvoices,
-    numberOfInvoices,
-    numberOfCustomers,
-  } = cardData;
-
   return (
     <>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard (Pages Router)
       </h1>
-      <div className="mb-2 flex items-center gap-1.5 rounded-md bg-green-50 text-green-700 px-2 py-0.5 text-xs">
-        ✅ 全データ 取得完了 ({typeof loadTime === 'number' ? loadTime.toFixed(0) : '0'}ms)
-      </div>
-      <div className="grid grid-cols-4 gap-6">
-        {/* すべてのデータが揃ってから一度にレンダリング（ブロッキング） */}
-        <Card title="Collected" value={totalPaidInvoices} type="collected" />
-        <Card title="Pending" value={totalPendingInvoices} type="pending" />
-        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-        <Card
-          title="Total Customers"
-          value={numberOfCustomers}
-          type="customers"
-        />
-        <div className="col-span-2">
+      <LoadStatusBadge loadTime={loadTime} />
+      <DashboardGrid>
+        <CardSection cardData={cardData} />
+        <ChartContainer>
           <RevenueChartStatic revenue={revenue} />
-        </div>
-        <div className="col-span-2">
-          <LatestInvoicesClient
-            latestInvoices={latestInvoices as LatestInvoice[]}
-          />
-        </div>
-      </div>
+        </ChartContainer>
+        <ChartContainer>
+          <LatestInvoicesClient latestInvoices={latestInvoices} />
+        </ChartContainer>
+      </DashboardGrid>
     </>
   );
 }
