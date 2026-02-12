@@ -1,35 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Amplify SSRサポートのためstandaloneモードを有効化
-  output: 'standalone',
   images: {
-    unoptimized: true,
+    unoptimized: true, // 画像最適化は Vercel の外部ホスト向け
   },
-  // Server Componentsでpostgresを外部化（Next.js 16ではserverExternalPackagesを使用）
-  serverExternalPackages: ['postgres'],
-  webpack: (config, { isServer }) => {
-    // クライアント側でpostgresとNode.js組み込みモジュールを外部化
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-        stream: false,
-        perf_hooks: false,
-        os: false,
-      };
-      // postgresパッケージ自体を外部化
-      config.externals = config.externals || [];
-      config.externals.push({
-        postgres: 'commonjs postgres',
-      });
-    }
-    return config;
+
+  // ────────────── SPA fallback 用 rewrites ──────────────
+  async rewrites() {
+    return [
+      {
+        source: "/:path*", // どのパスも
+        destination: "/", // index.html にフォールバック
+      },
+    ];
   },
-  // Turbopack設定（空の設定でエラーを回避）
-  turbopack: {},
 };
 
 module.exports = nextConfig;
